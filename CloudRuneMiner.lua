@@ -203,11 +203,22 @@ API.Write_LoopyLoop(true)
 while (API.Read_LoopyLoop()) do    
     drawGUI()
 
+   -- if API.CheckAnim(10) or API.ReadPlayerMovin2() then
+   --     API.RandomSleep2(50, 100, 100)
+   --     goto continue
+   -- end
+
+    local currentTime = os.time()
+    print("Updating UI")
+    if currentTime - uiUpdateTimer >= 1 then
+        uiUpdateTimer = currentTime
+        printProgressReport()
+    end
+
     print("LOGIC:Checking if player is at Mines and if Invy is not full")
-    if API.PInArea(3028, 20, 9736, 20)then
+    if API.PInArea(3028, 30, 9736, 30)then
         print("LOGIC:Mining More Ore")
         MineMoreOre()
-        printProgressReport()
         if API.InvFull_() then
             print("LOGIC:Invy is Full, Filling Orebox")
             fillorebox()
@@ -216,9 +227,6 @@ while (API.Read_LoopyLoop()) do
             print("LOGIC:Invy still full Going to bank")
             WalktoBank()
             banking()
-        else 
-            print("LOGIC:You still Broke AF.  Mining more")
-            MineMoreOre()
             end       
         end
     end
@@ -237,14 +245,10 @@ while (API.Read_LoopyLoop()) do
         end   
    
 
-    -- Check if one second has passed since the last UI update
-    local currentTime = os.time()
-    if currentTime - uiUpdateTimer >= 1 then
-        uiUpdateTimer = currentTime
+        ::continue::
         printProgressReport()
-    end
+        API.RandomSleep2(100, 200, 200)
 
-    printProgressReport()
 
     -- Main loop sleep interval increased to 1 second
     API.RandomSleep2(1000, 200, 200)
